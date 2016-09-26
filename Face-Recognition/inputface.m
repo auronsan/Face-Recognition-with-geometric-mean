@@ -1,0 +1,799 @@
+
+
+function varargout = inputface(varargin)
+% INPUTFACE M-file for inputface.fig
+%      INPUTFACE, by itself, creates a new INPUTFACE or raises the existing
+%      singleton*.
+%
+%      H = INPUTFACE returns the handle to a new INPUTFACE or the handle to
+%      the existing singleton*.
+%
+%      INPUTFACE('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in INPUTFACE.M with the given input arguments.
+%
+%      INPUTFACE('Property','Value',...) creates a new INPUTFACE or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before inputface_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to inputface_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help inputface
+
+% Last Modified by GUIDE v2.5 14-Apr-2015 10:54:14
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @inputface_OpeningFcn, ...
+                   'gui_OutputFcn',  @inputface_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before inputface is made visible.
+function inputface_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to inputface (see VARARGIN)
+
+% Choose default command line output for inputface
+handles.output = hObject;
+guidata(hObject, handles);
+proyek = guidata(gcf);
+
+set(proyek.figure1,'CurrentAxes',proyek.axes1)
+bacground_axes = imread('bg_foto1.jpg');
+imshow(bacground_axes);
+
+% Update handles structure
+guidata(hObject, handles);
+
+% UIWAIT makes inputface wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = inputface_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+clc,clear all
+
+
+% --- Executes on button press in pushbutton1.
+function pushbutton1_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[file path2]=uigetfile('D:\Skripsi\data\referensi\ *.jpg;*.png;*.pgm','Select any image');
+chosenfile=[path2 file];
+J= imread(chosenfile);
+proyek = guidata(gcbo);
+origin=J;
+set(proyek.text3,'String',file);
+save origin;
+axes(proyek.axes1);
+imshow(J, []);
+hAx  = handles.axes1;
+h= imrect(hAx,[10 10 205 205]);
+position = wait(h);
+pos=getPosition(h);
+pos
+edit =get(handles.edit9,'string');
+edit1=str2num(edit)
+save edit1;
+save J;
+save pos;
+save file;
+
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit1 as text
+%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function edit2_Callback(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit2 as text
+%        str2double(get(hObject,'String')) returns contents of edit2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton7.
+function pushbutton7_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+load data;
+load jarak_mata1_mata2;
+load jarak_mata1_hidung;
+load jarak_mata1_mulut;
+load jarak_mata2_hidung;
+load jarak_mata2_mulut;
+load jarak_hidung_mulut;
+load file;
+
+a=jarak_mata1_mata2;
+b=jarak_mata1_hidung;
+c=jarak_mata1_mulut;
+d=jarak_mata2_hidung;
+e=jarak_mata2_mulut;
+f=jarak_hidung_mulut;
+
+temp = data;
+name =get(handles.edit4,'string');
+[x y]=size(temp)
+temp{x+1,1}=file;
+temp{x+1,2}=name;
+temp{x+1,3}=a;
+temp{x+1,4}=b;
+temp{x+1,5}=c;
+temp{x+1,6}=d;
+temp{x+1,7}=e;
+temp{x+1,8}=f;
+temp
+data=temp;
+
+% name =get(handles.edit4,'string');
+% x=0;
+% temp{x+1,1}=file;
+% temp{x+1,2}=name;
+% temp{x+1,3}=a;
+% temp{x+1,4}=b;
+% temp{x+1,5}=c;
+% temp{x+1,6}=d;
+% temp{x+1,7}=e;
+% temp{x+1,8}=f;
+% temp
+% data=temp;
+
+save data
+
+
+
+function edit4_Callback(hObject, eventdata, handles)
+% hObject    handle to edit4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit4 as text
+%        str2double(get(hObject,'String')) returns contents of edit4 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit5_Callback(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit5 as text
+%        str2double(get(hObject,'String')) returns contents of edit5 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton10.
+function pushbutton10_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+load pos;
+load J;
+crop = guidata(gcbo)
+pos
+J=imcrop(J,pos);
+%J=imresize(J,[120 120]);
+axes(handles.axes1);
+imshow(J);
+save J;
+c=rgb2gray(J);
+c=edge(c,'sobel');
+axes(handles.axes1);
+imshow(c);
+[baris kolom]=size(c);
+eye1=imrect(hAx,[0,0,floor(kolom/2),floor(baris/4+baris/8)]);
+eye2=imrect(hAx,[floor(kolom/2),0,floor(kolom/2),floor(baris/4+baris/8)]);
+nose=imrect(hAx,[0,floor(baris/4+baris/8),kolom,floor(baris/3)]);
+mouth=imrect(hAx,[0,floor(baris/4+baris/8+baris/3),kolom,floor(baris-(baris/4+baris/8+baris/3))]);
+temp3=0;
+temp4=0;
+save eye1;
+save eye2;
+save nose;
+save mouth;
+save c
+% --- Executes on button press in pushbutton11.
+function pushbutton11_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+load eye1
+load eye2
+load nose
+load mouth
+load c;
+hAx  = handles.axes1;
+%mulai pemotongan bagian
+pos=getPosition(eye1); 
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+for i=baris2min+1:lebar+baris2min
+    for j=kolom2min+1:panjang+kolom2min
+    d(i,j)=c(i,j); %potong per bagian
+    end
+end
+[baris kolom]=find(d==1); %mencari nilai 1 per bagian
+barismin=min(baris)
+barismax=max(baris)
+kolommin=min(kolom)
+kolommax=max(kolom)
+
+
+eye1=imrect(hAx,[kolommin-1,barismin-1,kolommax-kolommin+1,barismax-barismin+1]); %mengkerucutkan kotak
+
+pos=getPosition(eye2)
+
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+for i=baris2min+1:lebar+baris2min
+    for j=kolom2min+1:panjang+kolom2min
+    e(i,j)=c(i,j);
+    end
+end
+[baris kolom]=find(e==1);
+barismin=min(baris)
+barismax=max(baris)
+kolommin=min(kolom)
+kolommax=max(kolom)
+
+
+eye2=imrect(hAx,[kolommin-1,barismin-1,kolommax-kolommin+1,barismax-barismin+1]);
+
+pos=getPosition(nose)
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+
+for i=baris2min+1:lebar+baris2min
+    for j=kolom2min+1:panjang+kolom2min
+    f(i,j)=c(i,j);
+    end
+end
+[baris kolom]=find(f==1);
+barismin=min(baris)
+barismax=max(baris)
+kolommin=min(kolom)
+kolommax=max(kolom)
+
+
+nose=imrect(hAx,[kolommin-1,barismin-1,kolommax-kolommin+1,barismax-barismin+1]);
+
+pos=getPosition(mouth)
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+for i=baris2min+1:lebar+baris2min
+    for j=kolom2min+1:panjang+kolom2min
+    g(i,j)=c(i,j);
+    end
+end
+[baris kolom]=find(g==1);
+barismin=min(baris)
+barismax=max(baris)
+kolommin=min(kolom)
+kolommax=max(kolom)
+
+
+mouth=imrect(hAx,[kolommin-1,barismin-1,kolommax-kolommin+1,barismax-barismin+1]); %pemotongan bagian selesai
+
+%mulai pengoptimalan bentuk setiap bagian
+
+%eye1
+pos=getPosition(eye1)
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+
+[baris kolom]=find(d==1);
+baris3=size(baris);
+temp5=0;
+x=2;
+y=1;
+status=0;
+for i=baris2min+1:lebar+baris2min+1
+for orde=1:baris3(1)
+    if baris(orde)==i
+    temp5(y,x)=kolom(orde);
+    temp5(y,1)=i;
+    x=x+1;
+    status=1;
+    end
+    if status==1&&orde==baris3(1)
+    y=y+1;
+    end
+    
+    end
+status=0;
+x=2;
+end
+
+[baris4 kolom4]=size(temp5);
+temp5(~temp5)=NaN;
+
+for i=1:baris4
+smin=min(temp5(i,2:kolom4));
+smax=max(temp5(i,2:kolom4));
+for j=smin:smax
+d(temp5(i,1),j)=1;
+c(temp5(i,1),j)=1;
+end
+end
+
+%eye2
+pos=getPosition(eye2)
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+
+[baris kolom]=find(e==1);
+baris3=size(baris);
+temp5=0;
+x=2;
+y=1;
+status=0;
+for i=baris2min+1:lebar+baris2min+1
+for orde=1:baris3(1)
+    if baris(orde)==i
+    temp5(y,x)=kolom(orde);
+    temp5(y,1)=i;
+    x=x+1;
+    status=1;
+    end
+    if status==1&&orde==baris3(1)
+    y=y+1;
+    end
+    
+    end
+status=0;
+x=2;
+end
+
+[baris4 kolom4]=size(temp5);
+temp5(~temp5)=NaN;
+
+for i=1:baris4
+smin=min(temp5(i,2:kolom4));
+smax=max(temp5(i,2:kolom4));
+for j=smin:smax
+e(temp5(i,1),j)=1;
+c(temp5(i,1),j)=1;
+end
+end
+
+%nose
+pos=getPosition(nose)
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+
+[baris kolom]=find(f==1);
+baris3=size(baris);
+temp5=0;
+x=2;
+y=1;
+status=0;
+for i=baris2min+1:lebar+baris2min+1
+for orde=1:baris3(1)
+    if baris(orde)==i
+    temp5(y,x)=kolom(orde);
+    temp5(y,1)=i;
+    x=x+1;
+    status=1;
+    end
+    if status==1&&orde==baris3(1)
+    y=y+1;
+    end
+    
+    end
+status=0;
+x=2;
+end
+
+[baris4 kolom4]=size(temp5);
+temp5(~temp5)=NaN;
+
+for i=1:baris4
+smin=min(temp5(i,2:kolom4));
+smax=max(temp5(i,2:kolom4));
+for j=smin:smax
+f(temp5(i,1),j)=1;
+c(temp5(i,1),j)=1;
+end
+end
+
+%mouth
+pos=getPosition(mouth)
+kolom2min=pos(1);
+baris2min=pos(2);
+panjang=pos(3);
+lebar=pos(4);
+
+[baris kolom]=find(g==1);
+baris3=size(baris);
+temp5=0;
+x=2;
+y=1;
+status=0;
+for i=baris2min+1:lebar+baris2min+1
+for orde=1:baris3(1)
+    if baris(orde)==i
+    temp5(y,x)=kolom(orde);
+    temp5(y,1)=i;
+    x=x+1;
+    status=1;
+    end
+    if status==1&&orde==baris3(1)
+    y=y+1;
+    end
+    
+    end
+status=0;
+x=2;
+end
+
+[baris4 kolom4]=size(temp5);
+temp5(~temp5)=NaN;
+
+for i=1:baris4
+smin=min(temp5(i,2:kolom4));
+smax=max(temp5(i,2:kolom4));
+for j=smin:smax
+g(temp5(i,1),j)=1;
+c(temp5(i,1),j)=1;
+end
+end
+
+%morfologi closing
+se=strel('disk',2);
+c=imclose(c,se);
+se=strel('disk',1);
+c=imopen(c,se);
+axes(handles.axes1);
+imshow(J);
+
+%eye1
+
+d=double(d);
+s= regionprops(d, 'centroid');
+centroids = cat(1, s.Centroid);
+hold on
+plot(centroids(:,1), centroids(:,2), 'b*')
+titik_tengah_mata1=centroids;
+%eye2
+
+e=double(e);
+s= regionprops(e, 'centroid');
+centroids = cat(1, s.Centroid);
+hold on
+plot(centroids(:,1), centroids(:,2), 'b*')
+titik_tengah_mata2=centroids;
+
+%nose
+
+f=double(f);
+s= regionprops(f, 'centroid');
+centroids = cat(1, s.Centroid);
+hold on
+plot(centroids(:,1), centroids(:,2), 'b*')
+titik_tengah_hidung=centroids
+
+%mouth
+g=double(g);
+s = regionprops(g, 'centroid');
+centroids = cat(1, s.Centroid);
+hold on
+plot(centroids(:,1), centroids(:,2), 'b*')
+titik_tengah_mulut=centroids
+
+jarak_mata1_mata2=norm(titik_tengah_mata1 - titik_tengah_mata2);
+jarak_mata1_hidung=norm(titik_tengah_mata1 - titik_tengah_hidung);
+jarak_mata1_mulut=norm(titik_tengah_mata1 - titik_tengah_mulut);
+jarak_mata2_hidung=norm(titik_tengah_mata2 - titik_tengah_hidung);
+jarak_mata2_mulut=norm(titik_tengah_mata2 - titik_tengah_mulut);
+jarak_hidung_mulut=norm(titik_tengah_hidung - titik_tengah_mulut);
+
+
+save jarak_mata1_mata2;
+save jarak_mata1_hidung;
+save jarak_mata1_mulut;
+save jarak_mata2_hidung;
+save jarak_mata2_mulut;
+save jarak_hidung_mulut;
+
+proyek = guidata(gcbo);
+set(proyek.edit1,'String',num2str(jarak_mata1_mata2));
+set(proyek.edit2,'String',num2str(jarak_mata1_hidung));
+set(proyek.edit5,'String',num2str(jarak_mata1_mulut));
+set(proyek.edit6,'String',num2str(jarak_mata2_hidung));
+set(proyek.edit7,'String',num2str(jarak_mata2_mulut));
+set(proyek.edit8,'String',num2str(jarak_hidung_mulut));
+
+
+
+%pembenteukan setiap garis
+line = guidata(gcbo);
+position=[titik_tengah_mata1(1) titik_tengah_mata1(2); titik_tengah_mata2(1) titik_tengah_mata2(2)];
+h = imline(line.axes1,position);
+
+
+position=[titik_tengah_mata1(1) titik_tengah_mata1(2); titik_tengah_hidung(1) titik_tengah_hidung(2)];
+h = imline(line.axes1,position);
+
+
+position=[titik_tengah_mata1(1) titik_tengah_mata1(2); titik_tengah_mulut(1) titik_tengah_mulut(2)];
+h = imline(line.axes1,position);
+
+
+
+position=[titik_tengah_mata2(1) titik_tengah_mata2(2); titik_tengah_hidung(1) titik_tengah_hidung(2)];
+h = imline(line.axes1,position);
+
+
+position=[titik_tengah_mata2(1) titik_tengah_mata2(2); titik_tengah_mulut(1) titik_tengah_mulut(2)];
+h = imline(line.axes1,position);
+
+
+position=[titik_tengah_hidung(1) titik_tengah_hidung(2); titik_tengah_mulut(1) titik_tengah_mulut(2)];
+h = imline(line.axes1,position);
+
+
+
+hold off
+
+save c;
+
+
+
+function edit6_Callback(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit6 as text
+%        str2double(get(hObject,'String')) returns contents of edit6 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit7_Callback(hObject, eventdata, handles)
+% hObject    handle to edit7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit7 as text
+%        str2double(get(hObject,'String')) returns contents of edit7 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit8_Callback(hObject, eventdata, handles)
+% hObject    handle to edit8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit8 as text
+%        str2double(get(hObject,'String')) returns contents of edit8 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu1.
+function popupmenu1_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns popupmenu1 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu1
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over popupmenu1.
+function popupmenu1_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+
+function edit9_Callback(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit9 as text
+%        str2double(get(hObject,'String')) returns contents of edit9 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton14.
+function pushbutton14_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+load edit1;
+load data;
+load jarak_mata1_mata2;
+load jarak_mata1_hidung;
+load jarak_mata1_mulut;
+load jarak_mata2_hidung;
+load jarak_mata2_mulut;
+load jarak_hidung_mulut;
+load file;
+
+a=jarak_mata1_mata2;
+b=jarak_mata1_hidung;
+c=jarak_mata1_mulut;
+d=jarak_mata2_hidung;
+e=jarak_mata2_mulut;
+f=jarak_hidung_mulut;
+
+temp = data;
+name =get(handles.edit4,'string');
+temp{edit1,1}=file;
+temp{edit1,2}=name;
+temp{edit1,3}=a;
+temp{edit1,4}=b;
+temp{edit1,5}=c;
+temp{edit1,6}=d;
+temp{edit1,7}=e;
+temp{edit1,8}=f;
+temp
+data=temp;
+save data;
